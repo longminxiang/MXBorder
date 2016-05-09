@@ -2,6 +2,16 @@
 
 ![ss](1.gif)
 
+## Installation
+
+Add to your `Podfile`:
+
+	pod 'MXBorder', '~> 0.1.0'
+	
+Run the following command:
+
+	$ pod install
+
 ## Usage
 
 #### singal border
