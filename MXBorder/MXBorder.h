@@ -31,10 +31,6 @@
 
 typedef void (^MXBorderMakerBlock)(MXBorderMaker *maker);
 
-@property (nonatomic, copy) UIColor *defaultColor;
-
-@property (nonatomic, assign) CGFloat defaultWidth;
-
 @property (nonatomic, readonly) MXBorderAttribute *top;
 @property (nonatomic, readonly) MXBorderAttribute *left;
 @property (nonatomic, readonly) MXBorderAttribute *bottom;

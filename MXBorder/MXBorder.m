@@ -103,6 +103,10 @@
 
 @interface MXBorderMaker ()
 
+@property (nonatomic, copy) UIColor *defaultColor;
+
+@property (nonatomic, assign) CGFloat defaultWidth;
+
 @end
 
 @implementation MXBorderMaker
