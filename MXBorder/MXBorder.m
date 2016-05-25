@@ -183,12 +183,14 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    //Fixing double-drawing of multiple sides when all four are enabled default in our case.
+    //work of cbreuer
     [super drawRect:rect];
     CGSize size = self.bounds.size;
     
     if (_top) {
         MXBorderAttribute *att = _top;
-        CGRect rect = CGRectMake(att.borderStart, 0, size.width - att.borderEnd, 0);
+        CGRect rect = CGRectMake(att.borderStart + att.borderWidth, 0, size.width - att.borderEnd - att.borderWidth, 0);
         [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
     if (_left) {
@@ -198,7 +200,7 @@
     }
     if (_bottom) {
         MXBorderAttribute *att = _bottom;
-        CGRect rect = CGRectMake(att.borderStart, size.height, size.width - att.borderEnd, size.height);
+        CGRect rect = CGRectMake(att.borderStart + att.borderWidth, size.height, size.width - att.borderEnd - att.borderWidth, size.height);
         [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
     if (_right) {
