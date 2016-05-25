@@ -37,6 +37,7 @@ void mxborder_hook_class_swizzleMethodAndStore(Class class, SEL originalSelector
 {
     [self mxborder_uiview_layoutSubviews];
     if (self.mx_borderMaker) {
+        [self bringSubviewToFront: self.mx_borderMaker];
         [self.mx_borderMaker setNeedsDisplay];
     }
 }
