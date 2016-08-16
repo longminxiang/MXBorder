@@ -69,7 +69,7 @@
     });
     
     [self.testView mx_showBorder:^(MXBorderMaker *maker) {
-        maker.all.mxb_width(20).mxb_color([UIColor brownColor]);
+        maker.all.mxb_width(0.5).mxb_color([UIColor brownColor]).mxb_dash(CGPointMake(5, 2));
     }];
 
 }

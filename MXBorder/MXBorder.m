@@ -15,6 +15,8 @@
 @property (nonatomic, assign) CGFloat borderStart;
 @property (nonatomic, assign) CGFloat borderEnd;
 
+@property (nonatomic, assign) CGPoint dash;
+
 @end
 
 @implementation MXBorderAttribute
@@ -47,6 +49,14 @@
 {
     return ^MXBorderAttribute *(CGFloat end){
         self.borderEnd = end;
+        return self;
+    };
+}
+
+- (NSObject<MXBorderAttributeProtocal> *(^)(CGPoint))mxb_dash
+{
+    return ^MXBorderAttribute *(CGPoint dash){
+        self.dash = dash;
         return self;
     };
 }
@@ -94,6 +104,17 @@
         for (MXBorderAttribute *att in self) {
             if (![att isKindOfClass:[MXBorderAttribute class]]) continue;
             att.borderEnd = end;
+        }
+        return self;
+    };
+}
+
+- (NSObject<MXBorderAttributeProtocal> *(^)(CGPoint))mxb_dash
+{
+    return ^NSArray *(CGPoint dash){
+        for (MXBorderAttribute *att in self) {
+            if (![att isKindOfClass:[MXBorderAttribute class]]) continue;
+            att.dash = dash;
         }
         return self;
     };
@@ -168,17 +189,20 @@
     return _all;
 }
 
-- (void)drawLineWithColor:(UIColor *)color width:(CGFloat)width rect:(CGRect)rect
+- (void)drawLineWithColor:(UIColor *)color width:(CGFloat)width rect:(CGRect)rect dash:(CGPoint)dash
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, color.CGColor);
     CGContextSetLineWidth(context, width * 2);
     CGContextSaveGState(context);
+    if (!CGPointEqualToPoint(dash, CGPointZero)) {
+        CGContextSetLineDash(context, 0, (CGFloat[]){dash.x, dash.y}, 2);
+    }
     CGContextMoveToPoint(context, rect.origin.x, rect.origin.y);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextClosePath(context);
-    CGContextRestoreGState(context);
     CGContextStrokePath(context);
+    CGContextRestoreGState(context);
 }
 
 - (void)drawRect:(CGRect)rect
@@ -189,22 +213,22 @@
     if (_top) {
         MXBorderAttribute *att = _top;
         CGRect rect = CGRectMake(att.borderStart, 0, size.width - att.borderEnd, 0);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect dash:att.dash];
     }
     if (_left) {
         MXBorderAttribute *att = _left;
         CGRect rect = CGRectMake(0, att.borderStart, 0, size.height - att.borderEnd);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect dash:CGPointMake(att.dash.y, att.dash.x)];
     }
     if (_bottom) {
         MXBorderAttribute *att = _bottom;
         CGRect rect = CGRectMake(att.borderStart, size.height, size.width - att.borderEnd, size.height);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect dash:att.dash];
     }
     if (_right) {
         MXBorderAttribute *att = _right;
         CGRect rect = CGRectMake(size.width, att.borderStart, size.width, size.height - att.borderEnd);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect dash:CGPointMake(att.dash.y, att.dash.x)];
     }
 }
 

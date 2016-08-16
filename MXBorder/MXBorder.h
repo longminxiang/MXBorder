@@ -14,6 +14,8 @@
 @property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_start)(CGFloat);
 @property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_end)(CGFloat);
 
+@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_dash)(CGPoint);
+
 @end
 
 @interface MXBorderAttribute : NSObject<MXBorderAttributeProtocal>
