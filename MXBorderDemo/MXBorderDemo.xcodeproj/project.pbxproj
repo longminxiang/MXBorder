@@ -18,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		073F2A2F1D643F5A0055F1EB /* MXBorder.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = MXBorder.podspec; path = ../MXBorder.podspec; sourceTree = "<group>"; };
 		076A5EDC1CE084F900C016FC /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		076A5EDD1CE084F900C016FC /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		076A5EDE1CE084F900C016FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 		078F54461CC6807600B0939E = {
 			isa = PBXGroup;
 			children = (
+				073F2A2F1D643F5A0055F1EB /* MXBorder.podspec */,
 				076A5F091CE0868000C016FC /* MXBorder */,
 				076A5EDB1CE084F900C016FC /* MXBorderDemo */,
 				078F54501CC6807600B0939E /* Products */,
