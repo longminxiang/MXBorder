@@ -7,28 +7,20 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MXBorderAttribute : NSObject
-
-@property (nonatomic, readonly) MXBorderAttribute *(^color)(UIColor*);
-@property (nonatomic, readonly) MXBorderAttribute *(^width)(CGFloat);
-@property (nonatomic, readonly) MXBorderAttribute *(^start)(CGFloat);
-@property (nonatomic, readonly) MXBorderAttribute *(^end)(CGFloat);
-
-@end
-
 #pragma mark
-#pragma mark === MXBorderMaker ===
+#pragma mark === MXBorder ===
 
-@interface MXBorderMaker : NSObject
+@interface MXBorder : UIView
 
-typedef void (^MXBorderMakerBlock)(MXBorderMaker *maker);
+@property (nonatomic, readonly, nonnull) MXBorder *top;
+@property (nonatomic, readonly, nonnull) MXBorder *left;
+@property (nonatomic, readonly, nonnull) MXBorder *bottom;
+@property (nonatomic, readonly, nonnull) MXBorder *right;
 
-@property (nonatomic, readonly) MXBorderAttribute *top;
-@property (nonatomic, readonly) MXBorderAttribute *left;
-@property (nonatomic, readonly) MXBorderAttribute *bottom;
-@property (nonatomic, readonly) MXBorderAttribute *right;
-
-- (void)drawInSize:(CGSize)size context:(CGContextRef)context;
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^color)(UIColor * _Nullable);
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^width)(CGFloat);
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^start)(CGFloat);
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^end)(CGFloat);
 
 @end
 
@@ -37,10 +29,12 @@ typedef void (^MXBorderMakerBlock)(MXBorderMaker *maker);
 
 @interface UIView (MXBorder)
 
-@property (nonatomic, readonly) MXBorderMaker *mx_borderMaker;
+typedef void (^MXBorderBlock)(MXBorder * _Nonnull border);
 
-- (void)mx_removeBoarder;
+@property (nonatomic, readonly, nullable) MXBorder *mix_border;
 
-- (void)mx_showBorder:(MXBorderMakerBlock)block;
+- (void)mix_removeBorder;
+
+- (void)mix_makeBorder:(MXBorderBlock _Nonnull )block;
 
 @end

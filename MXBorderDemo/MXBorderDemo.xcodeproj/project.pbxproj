@@ -14,7 +14,6 @@
 		076A5F041CE084F900C016FC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 076A5EF31CE084F900C016FC /* ViewController.m */; };
 		076A5F081CE0851400C016FC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 076A5F071CE0851400C016FC /* main.m */; };
 		076A5F1F1CE0894C00C016FC /* MXBorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 076A5F1E1CE0894C00C016FC /* MXBorder.m */; };
-		076A5F251CE0A31200C016FC /* UIView+MXBorderHooker.m in Sources */ = {isa = PBXBuildFile; fileRef = 076A5F241CE0A31200C016FC /* UIView+MXBorderHooker.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,8 +29,6 @@
 		076A5F071CE0851400C016FC /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MXBorderDemo/main.m; sourceTree = SOURCE_ROOT; };
 		076A5F1D1CE0894C00C016FC /* MXBorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MXBorder.h; sourceTree = "<group>"; };
 		076A5F1E1CE0894C00C016FC /* MXBorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MXBorder.m; sourceTree = "<group>"; };
-		076A5F231CE0A31200C016FC /* UIView+MXBorderHooker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MXBorderHooker.h"; sourceTree = "<group>"; };
-		076A5F241CE0A31200C016FC /* UIView+MXBorderHooker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MXBorderHooker.m"; sourceTree = "<group>"; };
 		078F544F1CC6807600B0939E /* MXBorderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MXBorderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -67,8 +64,6 @@
 			children = (
 				076A5F1D1CE0894C00C016FC /* MXBorder.h */,
 				076A5F1E1CE0894C00C016FC /* MXBorder.m */,
-				076A5F231CE0A31200C016FC /* UIView+MXBorderHooker.h */,
-				076A5F241CE0A31200C016FC /* UIView+MXBorderHooker.m */,
 			);
 			name = MXBorder;
 			path = ../MXBorder;
@@ -171,7 +166,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				076A5F251CE0A31200C016FC /* UIView+MXBorderHooker.m in Sources */,
 				076A5EF71CE084F900C016FC /* AppDelegate.m in Sources */,
 				076A5F041CE084F900C016FC /* ViewController.m in Sources */,
 				076A5F1F1CE0894C00C016FC /* MXBorder.m in Sources */,

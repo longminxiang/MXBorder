@@ -8,14 +8,12 @@
 #import "MXBorder.h"
 #import <objc/runtime.h>
 
-@interface MXBorderAttribute ()
+@interface MXBorderAttribute : NSObject
 
 @property (nonatomic, copy) UIColor *borderColor;
 @property (nonatomic, assign) CGFloat borderWidth;
 @property (nonatomic, assign) CGFloat borderStart;
 @property (nonatomic, assign) CGFloat borderEnd;
-
-@property (nonatomic, assign) CGPoint dash;
 
 @end
 
@@ -30,145 +28,172 @@
     return self;
 }
 
-- (MXBorderAttribute *(^)(UIColor *))color
-{
-    return ^MXBorderAttribute *(UIColor *color){
-        self.borderColor = color;
-        return self;
-    };
-}
+@end
 
-- (MXBorderAttribute *(^)(CGFloat))width
-{
-    return ^MXBorderAttribute *(CGFloat width){
-        self.borderWidth = width;
-        return self;
-    };
-}
 
-- (MXBorderAttribute *(^)(CGFloat))start
-{
-    return ^MXBorderAttribute *(CGFloat start){
-        self.borderStart = start;
-        return self;
-    };
-}
+@interface MXBorder ()
 
-- (MXBorderAttribute *(^)(CGFloat))end
-{
-    return ^MXBorderAttribute *(CGFloat end){
-        self.borderEnd = end;
-        return self;
-    };
-}
+@property (nonatomic, strong) MXBorderAttribute *topAttribute;
+@property (nonatomic, strong) MXBorderAttribute *leftAttribute;
+@property (nonatomic, strong) MXBorderAttribute *bottomAttribute;
+@property (nonatomic, strong) MXBorderAttribute *rightAttribute;
+
+@property (nonatomic, strong) NSMutableArray *attributes;
+
+@property (nonatomic, assign) BOOL inAttbutite;
 
 @end
 
-@interface MXBorderMaker ()
+@implementation MXBorder
 
-@end
-
-@implementation MXBorderMaker
-@synthesize top = _top, left = _left, bottom = _bottom, right = _right;
-
-- (MXBorderAttribute *)top
+- (NSMutableArray *)attributes
 {
-    if (!_top) {
-        _top = [MXBorderAttribute new];
+    if (!_attributes) {
+        _attributes = [NSMutableArray new];
     }
-    return _top;
+    return _attributes;
 }
 
-- (MXBorderAttribute *)left
-{
-    if (!_left) {
-        _left = [MXBorderAttribute new];
-    }
-    return _left;
+#define _MIX_EDGE(__att, __name) \
+- (MXBorder *)__name \
+{ \
+    if (!__att) { \
+        __att = [MXBorderAttribute new]; \
+    } \
+    if (self.inAttbutite) { \
+        [self.attributes removeAllObjects]; \
+        self.inAttbutite = NO; \
+    } \
+    if (![self.attributes containsObject:__att]) { \
+        [self.attributes addObject:__att]; \
+    } \
+    return self; \
 }
 
-- (MXBorderAttribute *)bottom
-{
-    if (!_bottom) {
-        _bottom = [MXBorderAttribute new];
-    }
-    return _bottom;
+_MIX_EDGE(_topAttribute, top)
+_MIX_EDGE(_leftAttribute, left)
+_MIX_EDGE(_bottomAttribute, bottom)
+_MIX_EDGE(_rightAttribute, right)
+
+#define _MIX_ATTRIBUTE(__att, __class, __name) \
+- (MXBorder *(^)(__class))__name \
+{ \
+    self.inAttbutite = YES; \
+    return ^MXBorder *(__class __name) { \
+        for (MXBorderAttribute *att in self.attributes) { \
+            att.__att = __name; \
+        } \
+        return self; \
+    }; \
 }
 
-- (MXBorderAttribute *)right
-{
-    if (!_right) {
-        _right = [MXBorderAttribute new];
-    }
-    return _right;
-}
+_MIX_ATTRIBUTE(borderColor, UIColor*, color)
+_MIX_ATTRIBUTE(borderWidth, CGFloat, width)
+_MIX_ATTRIBUTE(borderStart, CGFloat, start)
+_MIX_ATTRIBUTE(borderEnd, CGFloat, end)
 
-- (void)drawLineWithColor:(UIColor *)color width:(CGFloat)width rect:(CGRect)rect context:(CGContextRef)context
+- (void)drawLineWithColor:(UIColor *)color width:(CGFloat)width rect:(CGRect)rect
 {
-//    if (!context) {
-        context = UIGraphicsGetCurrentContext();
-//    }
+    CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetStrokeColorWithColor(context, color.CGColor);
-    CGContextSetLineWidth(context, width * 2);
+    CGContextSetLineWidth(context, width);
     CGContextSaveGState(context);
     CGContextMoveToPoint(context, rect.origin.x, rect.origin.y);
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
-//    CGContextClosePath(context);
+    CGContextClosePath(context);
     CGContextStrokePath(context);
-//    CGContextRestoreGState(context); 
+    CGContextRestoreGState(context); 
 }
 
-- (void)drawInSize:(CGSize)size context:(CGContextRef)context
+- (void)drawRect:(CGRect)rect
 {
-    if (_top) {
-        MXBorderAttribute *att = _top;
+    [super drawRect:rect];
+    CGSize size = rect.size;
+    if (_topAttribute) {
+        MXBorderAttribute *att = _topAttribute;
         CGRect rect = CGRectMake(att.borderStart, 0, size.width - att.borderEnd, 0);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect context:context];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
-    if (_left) {
-        MXBorderAttribute *att = _left;
+    if (_leftAttribute) {
+        MXBorderAttribute *att = _leftAttribute;
         CGRect rect = CGRectMake(0, att.borderStart, 0, size.height - att.borderEnd);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect context:context];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
-    if (_bottom) {
-        MXBorderAttribute *att = _bottom;
+    if (_bottomAttribute) {
+        MXBorderAttribute *att = _bottomAttribute;
         CGRect rect = CGRectMake(att.borderStart, size.height, size.width - att.borderEnd, size.height);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect context:context];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
-    if (_right) {
-        MXBorderAttribute *att = _right;
+    if (_rightAttribute) {
+        MXBorderAttribute *att = _rightAttribute;
         CGRect rect = CGRectMake(size.width, att.borderStart, size.width, size.height - att.borderEnd);
-        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect context:context];
+        [self drawLineWithColor:att.borderColor width:att.borderWidth rect:rect];
     }
 }
 
 @end
 
+void mixborder_hook_class_swizzleMethodAndStore(Class class, SEL originalSelector, SEL swizzledSelector)
+{
+    Method originalMethod = class_getInstanceMethod(class, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+    
+    BOOL success = class_addMethod(class, originalSelector, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod));
+    if (success) {
+        class_replaceMethod(class, swizzledSelector, method_getImplementation(originalMethod), method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
 @implementation UIView (MXBorder)
 
-- (MXBorderMaker *)mx_borderMaker
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mixborder_hook_class_swizzleMethodAndStore(self, @selector(layoutSubviews), @selector(mixborder_uiview_layoutSubviews));
+    });
+}
+
+- (void)mixborder_uiview_layoutSubviews
+{
+    [self mixborder_uiview_layoutSubviews];
+    [self bringSubviewToFront:self.mix_border];
+    [self.mix_border setNeedsDisplay];
+}
+
+- (MXBorder *)mix_border
 {
     id obj = objc_getAssociatedObject(self, _cmd);
     return obj;
 }
 
-- (void)setMx_borderMaker:(MXBorderMaker *)mx_borderMaker
+- (void)setMix_border:(MXBorder * _Nullable)mix_border
 {
-    objc_setAssociatedObject(self, @selector(mx_borderMaker), mx_borderMaker, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(mix_border), mix_border, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)mx_removeBoarder
+- (void)mix_removeBorder
 {
-    self.mx_borderMaker = nil;
+    [self.mix_border removeFromSuperview];
+    self.mix_border = nil;
 }
 
-- (void)mx_showBorder:(MXBorderMakerBlock)block
+- (void)mix_makeBorder:(MXBorderBlock)block
 {
-    [self mx_removeBoarder];
-    MXBorderMaker *maker = [MXBorderMaker new];
+    [self mix_removeBorder];
+    MXBorder *maker = [MXBorder new];
+    maker.backgroundColor = [UIColor clearColor];
+    [self addSubview:maker];
+    maker.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:maker attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    NSLayoutConstraint *constraint1 = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:maker attribute:NSLayoutAttributeBottom multiplier:1 constant:0];
+    NSLayoutConstraint *constraint2 = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:maker attribute:NSLayoutAttributeLeft multiplier:1 constant:0];
+    NSLayoutConstraint *constraint3 = [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:maker attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+    [NSLayoutConstraint activateConstraints:@[constraint, constraint1, constraint2, constraint3]];
     if (block) block(maker);
-    self.mx_borderMaker = maker;
-    [self setNeedsDisplay];
+    self.mix_border = maker;
 }
 
 @end

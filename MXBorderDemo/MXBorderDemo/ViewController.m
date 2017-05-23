@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "MXBorder.h"
 
-@interface ViewController ()<CALayerDelegate>
+@interface ViewController ()
 
 @property (nonatomic, weak) IBOutlet UITextField *nameField, *passwordField;
 
@@ -33,39 +33,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-//    self.nameField.layer.allowsEdgeAntialiasing = YES;
-//    self.nameField.layer.borderColor = [UIColor blueColor].CGColor;
-//    self.nameField.layer.borderWidth = 1;
-//    self.nameField.layer.edgeAntialiasingMask = kCALayerBottomEdge | kCALayerTopEdge;
     
-    [self.nameField mx_showBorder:^(MXBorderMaker *maker) {
-        maker.bottom.width(0.5).color([UIColor blueColor]);
+    [self.nameField mix_makeBorder:^(MXBorder *border) {
+        border.bottom.color([UIColor lightGrayColor]);
     }];
     
-    [self.passwordField mx_showBorder:^(MXBorderMaker *maker) {
-        maker.bottom.width(0.5).color([UIColor blackColor]);
+    [self.passwordField mix_makeBorder:^(MXBorder *border) {
+        border.bottom.color([UIColor lightGrayColor]);
     }];
     
-    [self.label1 mx_showBorder:^(MXBorderMaker *maker) {
-        maker.left.start(8).end(8);
-        maker.right.start(8).end(8);
-        maker.right.color([UIColor blueColor]).width(2).end(10);
-        maker.bottom.color([UIColor grayColor]).width(3).end(10);
+    [self.label1 mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.color([UIColor blueColor]).width(1);
     }];
     
-    [self.label2 mx_showBorder:^(MXBorderMaker *maker) {
-        maker.left.start(8).end(8);
-        maker.right.start(8).end(8);
-        maker.right.color([UIColor blueColor]).width(2).end(10);
-        maker.bottom.color([UIColor grayColor]).width(3).end(10);
+    [self.label2 mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.left.right.color([UIColor blueColor]).width(1);
     }];
     
-    [self.label3 mx_showBorder:^(MXBorderMaker *maker) {
-        maker.top.color([UIColor orangeColor]).width(0.25).end(10);
-        maker.right.color([UIColor blueColor]).width(2).end(10);
-        maker.bottom.color([UIColor grayColor]).width(3).end(10);
+    [self.label3 mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.color([UIColor blueColor]).width(1);
     }];
     
+    [self.label4 mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.left.right.width(5).color([UIColor brownColor]);
+    }];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CGRect frame = self.label4.frame;
@@ -77,10 +68,13 @@
         } completion:nil];
     });
     
-    [self.testView mx_showBorder:^(MXBorderMaker *maker) {
-        maker.top.width(0.5).color([UIColor brownColor]);
+    [self.testView mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.left.right.width(5).color([UIColor brownColor]);
     }];
 
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.testViewEqualWidth.constant = 200;
+    });
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
