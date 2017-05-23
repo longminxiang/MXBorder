@@ -24,23 +24,20 @@ void mxborder_hook_class_swizzleMethodAndStore(Class class, SEL originalSelector
 }
 
 @implementation UIView (MXBorderHooker)
-
-+ (void)load
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        mxborder_hook_class_swizzleMethodAndStore(self, @selector(layoutSubviews), @selector(mxborder_uiview_layoutSubviews));
-    });
-}
-
-- (void)mxborder_uiview_layoutSubviews
-{
-    [self mxborder_uiview_layoutSubviews];
-    if (self.mx_borderMaker) {
-        [self bringSubviewToFront: self.mx_borderMaker];
-        [self.mx_borderMaker setNeedsDisplay];
-    }
-}
+//
+//+ (void)load
+//{
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        mxborder_hook_class_swizzleMethodAndStore(self, @selector(drawLayer:inContext:), @selector(mxborder_uiview_drawLayer:inContext:));
+//    });
+//}
+//
+//- (void)mxborder_uiview_drawLayer:(CALayer *)layer inContext:(CGContextRef)ctx
+//{
+//    [self mxborder_uiview_drawLayer:layer inContext:ctx];
+//    NSLog(@"ccccccccc");
+//}
 
 @end
 
@@ -51,15 +48,37 @@ void mxborder_hook_class_swizzleMethodAndStore(Class class, SEL originalSelector
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         mxborder_hook_class_swizzleMethodAndStore(self, @selector(drawTextInRect:), @selector(mxborder_uilabel_drawTextInRect:));
+        mxborder_hook_class_swizzleMethodAndStore(self, @selector(drawRect:), @selector(mxborder_uilabel_drawRect:));
     });
 }
 
 - (void)mxborder_uilabel_drawTextInRect:(CGRect)rect
 {
     [self mxborder_uilabel_drawTextInRect:rect];
-    if (self.mx_borderMaker) {
-        [self bringSubviewToFront:self.mx_borderMaker];
-    }
+}
+
+- (void)mxborder_uilabel_drawRect:(CGRect)rect
+{
+    [self.mx_borderMaker drawInSize:rect.size context:nil];
+    [self mxborder_uilabel_drawRect:rect];
+}
+
+@end
+
+@implementation UITextField (MXBorder)
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        mxborder_hook_class_swizzleMethodAndStore(self, @selector(drawRect:), @selector(mxborder_uilabel_drawRect:));
+    });
+}
+
+- (void)mxborder_uilabel_drawRect:(CGRect)rect
+{
+    [self.mx_borderMaker drawInSize:rect.size context:nil];
+    [self mxborder_uilabel_drawRect:rect];
 }
 
 @end

@@ -7,29 +7,19 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MXBorderAttributeProtocal <NSObject>
+@interface MXBorderAttribute : NSObject
 
-@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_color)(UIColor*);
-@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_width)(CGFloat);
-@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_start)(CGFloat);
-@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_end)(CGFloat);
-
-@property (nonatomic, readonly) NSObject<MXBorderAttributeProtocal> *(^mxb_dash)(CGPoint);
-
-@end
-
-@interface MXBorderAttribute : NSObject<MXBorderAttributeProtocal>
-
-@end
-
-@interface NSArray (MXBorder)<MXBorderAttributeProtocal>
+@property (nonatomic, readonly) MXBorderAttribute *(^color)(UIColor*);
+@property (nonatomic, readonly) MXBorderAttribute *(^width)(CGFloat);
+@property (nonatomic, readonly) MXBorderAttribute *(^start)(CGFloat);
+@property (nonatomic, readonly) MXBorderAttribute *(^end)(CGFloat);
 
 @end
 
 #pragma mark
 #pragma mark === MXBorderMaker ===
 
-@interface MXBorderMaker : UIView
+@interface MXBorderMaker : NSObject
 
 typedef void (^MXBorderMakerBlock)(MXBorderMaker *maker);
 
@@ -38,7 +28,7 @@ typedef void (^MXBorderMakerBlock)(MXBorderMaker *maker);
 @property (nonatomic, readonly) MXBorderAttribute *bottom;
 @property (nonatomic, readonly) MXBorderAttribute *right;
 
-@property (nonatomic, readonly) NSArray *all;
+- (void)drawInSize:(CGSize)size context:(CGContextRef)context;
 
 @end
 
