@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "MXBorder"
-  s.version      = "0.1.2"
+  s.version      = "2.0.0"
   s.summary      = "UIView Border Creator"
   s.description  = "Create UIView border without any pain"
   s.homepage     = "https://github.com/longminxiang/MXBorder"

@@ -19,7 +19,9 @@
 
 @property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^color)(UIColor * _Nullable);
 @property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^width)(CGFloat);
-@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^start)(CGFloat);
+
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^offset)(CGPoint);
+@property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^begin)(CGFloat);
 @property (nonatomic, readonly, nonnull) MXBorder* _Nonnull (^end)(CGFloat);
 
 @end

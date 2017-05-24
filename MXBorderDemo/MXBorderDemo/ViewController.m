@@ -18,6 +18,8 @@
 
 @property (nonatomic, weak) IBOutlet UILabel *label4;
 
+@property (nonatomic, weak) IBOutlet UILabel *label5;
+
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *label4Leading;
 
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *label4Trailing;
@@ -35,11 +37,11 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     [self.nameField mix_makeBorder:^(MXBorder *border) {
-        border.bottom.color([UIColor lightGrayColor]);
+        border.bottom.color([UIColor lightGrayColor]).begin(-20).end(-20);
     }];
     
     [self.passwordField mix_makeBorder:^(MXBorder *border) {
-        border.bottom.color([UIColor lightGrayColor]);
+        border.bottom.color([UIColor lightGrayColor]).begin(-20).end(-20);
     }];
     
     [self.label1 mix_makeBorder:^(MXBorder *border) {
@@ -58,6 +60,10 @@
         border.top.bottom.left.right.width(5).color([UIColor brownColor]);
     }];
     
+    [self.label5 mix_makeBorder:^(MXBorder *border) {
+        border.top.bottom.left.right.color([UIColor brownColor]);
+    }];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CGRect frame = self.label4.frame;
         frame.size.width = self.view.frame.size.width - 80 - 80;
@@ -66,6 +72,7 @@
             self.label4Trailing.constant = -80;
             self.label4.frame = frame;
         } completion:nil];
+        self.label5.text = @"uedkikckcclclclcspssp";
     });
     
     [self.testView mix_makeBorder:^(MXBorder *border) {
@@ -74,6 +81,10 @@
 
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.testViewEqualWidth.constant = 200;
+        self.label3.text = @"ccckdd";
+        self.label1.text = @"ddddww";
+        self.label2.text = @"deeeeeeeeeee";
+        self.label5.text = @"ccccccccc\ncccccccc";
     });
 }
 
